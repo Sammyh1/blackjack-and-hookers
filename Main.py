@@ -21,6 +21,37 @@ class Player(object):
         self.money += amount
 
 
+def ace_check(points, aces):
+    for i in range(aces):
+        if points + 11 == 21:
+            if i == (aces - 1):
+                points += 11
+        else:
+            points += 1
+
+    return points
+
+
+def get_hand_score(hand):
+    points_total = 0
+    no_of_aces = 0
+    for card in hand:
+        if card[0] in 'TJQK':
+            points_total += 10
+        elif card[0] == 'A':
+            no_of_aces += 1
+        else:
+            points_total += int(card[0])
+    if no_of_aces > 0:
+        points_total = ace_check(points_total, no_of_aces)
+    return points_total
+
+
+def card_check(hand):
+    score = get_hand_score(hand)
+    print(score)
+
+
 def deal_cards(number):
     """
     pops a random car out of the deck and appends it to your hand
@@ -43,7 +74,13 @@ def play():
             bet = int(input('What is your bet amount? If you want to quit type 0'))
         except:
             print('Please type a number')
+
+        if bet == 0:
+            print('You finished the game with %d chips' % p.money)
+            break
         p.hand = deal_cards(2)
+        print('Your hand is ' + str(p.hand))
+        card_check(p.hand)
         dealer_hand = deal_cards(2)
         print('The dealer shows one card of his two, it is the %s' % (dealer_hand[0]))
 
