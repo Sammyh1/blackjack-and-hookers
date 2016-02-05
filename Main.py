@@ -23,12 +23,12 @@ class Player(object):
 
 def ace_check(points, aces):
     for i in range(aces):
-        if points + 11 == 21:
-            if i == (aces - 1):
-                points += 11
-        else:
+        if i < (aces - 1):
             points += 1
-
+        elif (points + 11) > 21:
+            points += 1
+        else:
+            points += 11
     return points
 
 
